@@ -17,7 +17,7 @@ import com.product.list.entities.Product;
  */
 public class ProductDao 
 {
-	Product tProduct = new Product();
+	//Product tProduct = new Product();
 	
 	public Product getProductDetailsBySku(String pCode) throws Exception
 	{
@@ -58,7 +58,6 @@ public class ProductDao
 	}
 	
 	private Product mapRecord(ResultSet rset) throws Exception
-
 	{
 		Product tProduct = new Product();
 		tProduct.setCode(rset.getString(1));
@@ -66,29 +65,34 @@ public class ProductDao
 		tProduct.setPrice(rset.getFloat(3));
 		return tProduct;
 	}
-
-//	public boolean isSKUExists(String pCode) throws Exception
-//	{
-//		Connection con = (Connection) MySQLConnUtils.getMySQLConnection();
-//		Product tProduct = new Product();
-//		if(tProduct.getCode() != null)
-//		{
-//			PreparedStatement ps;
-//			try 
-//			{
-//				ps = con.prepareStatement("select * from Product where code=?");
-//				ps.setString(1, pCode);
-//				ResultSet rs = ps.executeQuery();
-//				while(rs.next())
-//				{
-//					return true;
-//				}
-//			} 
-//			catch (SQLException e) 
-//			{
-//				e.printStackTrace();
-//			}
-//		}
-//		return false;
-//	}
+	
+	public void createProduct(Product pProduct) throws Exception
+	{
+		Connection con = (Connection) MySQLConnUtils.getMySQLConnection();
+		PreparedStatement ps = con.prepareStatement("Insert into Product(Code, Name,Price) values (?,?,?)");
+		ps.setString(1, pProduct.getCode());
+		ps.setString(2, pProduct.getName());
+		ps.setFloat(3, pProduct.getPrice());
+		ps.executeUpdate();
+		con.close();
+	}
+	
+	public void updateProductDetails(Product pProduct) throws Exception
+	{
+		Connection con = (Connection) MySQLConnUtils.getMySQLConnection();
+		PreparedStatement ps = con.prepareStatement("Update Product set Name = ?, Price = ? where Code = ?");
+		ps.setString(1, pProduct.getName());
+		ps.setFloat(2, pProduct.getPrice());
+		ps.setString(3, pProduct.getCode());
+		ps.executeUpdate();
+		con.close();
+	}
+	
+	public static void deleteProduct(String code) throws Exception 
+	{
+		Connection con = (Connection) MySQLConnUtils.getMySQLConnection();
+        PreparedStatement ps = con.prepareStatement("Delete From Product where Code= ?");
+        ps.setString(1, code);
+        ps.executeUpdate();
+    }
 }

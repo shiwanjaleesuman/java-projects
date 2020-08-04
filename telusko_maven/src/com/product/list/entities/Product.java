@@ -19,6 +19,18 @@ public class Product
 	}
 
 	/**
+	 * @param code
+	 * @param name
+	 * @param price
+	 */
+	public Product(String code, String name, float price) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.price = price;
+	}
+
+	/**
 	 * @return the code
 	 */
 	public String getCode() {
